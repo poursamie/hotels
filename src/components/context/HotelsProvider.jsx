@@ -8,16 +8,18 @@ const HotelContext = createContext();
 const BASE_URL = "http://localhost:5000/hotels";
 
 function HotelsProvider({ children }) {
-  const [currentHotel, setCurrentHotel] = useState(null);
-  const [isLoadingCurrHotel, setIsLoadinCurrHotel] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const destination = searchParams.get("destination");
-  const room = JSON.parse(searchParams.get("options"))?.room;
+	const [currentHotel, setCurrentHotel] = useState(null);
+	const [isLoadingCurrHotel, setIsLoadinCurrHotel] = useState(false);
+	const [searchParams, setSearchParams] = useSearchParams();
+	const destination = searchParams.get('destination');
+	const room = JSON.parse(searchParams.get('options'))?.room;
+	const adult = JSON.parse(searchParams.get('options'))?.adult;
+	const numOfChildren = JSON.parse(searchParams.get('options'))?.children;
 
-  const { isLoading, data: hotels } = useFetch(
-    BASE_URL,
-    `q=${destination || ""}&accommodates_gte=${room || 1}`
-  );
+	const { isLoading, data: hotels } = useFetch(
+		BASE_URL,
+		`q=${destination || ''}&room_gte=${room || 1}&adult_gte=${adult || 1}&children_gte=${numOfChildren || 1}`,
+	);
 
   async function getHotel(id) {
     setIsLoadinCurrHotel(true);
